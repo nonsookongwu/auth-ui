@@ -1,0 +1,25 @@
+{
+
+    "adminData":[
+    { "formFields":{
+        "firstName": true,
+        "lastname": true,
+        "fullName": false,
+        "email" :true,
+        "PhoneNumber": true,
+        "password": true
+    },
+    "formPositioning": "up",
+    "borderRadius": "normal",
+    "buttonColor": "normal",
+    "brandImageUrl": "link",
+    "brandImageSize": "32px",
+    "brandImagePosition": "center",
+    "logoUrl":"https://www.google.com/images/branding/googleg/1x/googleg_standard_color",
+    "logoImageSize": "24px",
+    "logoImagePosition": "left"
+    }
+
+    ]
+
+}
