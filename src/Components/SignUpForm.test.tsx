@@ -43,7 +43,7 @@ describe("sign up", () => {
         const { getByLabelText, container } = render(<SignUpForm onSubmit={mockOnSubmit} />);
 
         await act(async () => {
-          const firstNameInput = getByLabelText("First Name *")
+          const firstNameInput = getByLabelText("First Name")
           fireEvent.change(firstNameInput, {target:{value: ""}})
         })
 
@@ -56,7 +56,7 @@ describe("sign up", () => {
         const { getByLabelText, container } = render(<SignUpForm onSubmit={mockOnSubmit} />);
 
         await act(async () => {
-          const lastNameInput = getByLabelText("Last Name *")
+          const lastNameInput = getByLabelText("Last Name")
           fireEvent.change(lastNameInput, {target:{value: ""}})
         })
 
@@ -73,7 +73,7 @@ describe("sign up", () => {
           );
         
         await act(async () => {
-          const emailInput = getByLabelText("E-mail *");
+          const emailInput = getByLabelText("E-mail");
           fireEvent.change(emailInput, { target: { value: "" } });
         });
 
@@ -89,11 +89,11 @@ describe("sign up", () => {
           );
         
         await act(async () => {
-          const companyNameInput = getByLabelText("E-mail *");
+          const companyNameInput = getByLabelText("Company name");
           fireEvent.change(companyNameInput, { target: { value: "" } });
         });
 
-        expect(container.innerHTML).toMatch("Company name cannot be empty");
+        expect(container.innerHTML).toContain("Company name cannot be empty");
         })
     });
 })

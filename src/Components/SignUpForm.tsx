@@ -185,9 +185,9 @@ const [formData, setFormData] = useState<FieldValues>();
               <Button type="submit" variant="contained" size="large" data-testid="button" >
                 Sign up
               </Button>
-              <Button variant="contained" size="large">
+              {/* <Button variant="contained" size="large">
                 Back to Login
-              </Button>
+              </Button> */}
             </Stack>
           </Stack>
         </Responsive>
