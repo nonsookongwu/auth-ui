@@ -16,20 +16,21 @@ interface Props {
   onCopyPhone: (event: string) => void;
 }
 
-const CountryPhoneTimezone = ({onSelectCountry, selectedCountry, onSelectTimezone, onCopyPhone}: Props) => {
-  
-   const {
-     register,
-     reset,
-     formState: { errors },
-   } = useForm();
-  
-  const { countries } = useCountries()
-  
+const CountryPhoneTimezone = ({
+  onSelectCountry,
+  selectedCountry,
+  onSelectTimezone,
+  onCopyPhone,
+}: Props) => {
+  const {
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
 
- 
-  
- 
+  const { countries } = useCountries();
+
+  console.log(countries)
 
   return (
     <div>

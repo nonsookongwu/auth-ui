@@ -32,7 +32,7 @@ const useCountries = () => {
           signal: controller.signal,
         })
           .then((res) => res.json())
-          .then((res) => setCountry(res.data))
+          .then((res) => setCountry(res))
           .catch((error) => {
             
             setError(error.message);

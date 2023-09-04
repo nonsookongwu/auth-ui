@@ -9,12 +9,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import ImageLogo from "./ImageLogo";
-import {FieldValues, useForm} from 'react-hook-form'
+import { FieldValues, useForm } from "react-hook-form";
 import CountryPhoneTimezone from "./CountryPhoneTimezone";
 // import { Country } from "../Services/countryData";
 import useAdmin, { FormFields } from "../Custom hooks/useAdmin";
 import { Country } from "../Custom hooks/useCountries";
-
 
 const Responsive = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
@@ -35,35 +34,36 @@ const Responsive = styled("div")(({ theme }) => ({
   },
 }));
 
-export interface FormData{
-    firstName: string;
-    lastName: string;
-    email: string;
-    companyName: string;
+export interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  companyName: string;
 }
 
 interface Props {
   onSubmit: (data: FieldValues) => void;
 }
 
-const SignUpForm = ({onSubmit}:Props) => {
-
-  
-  
+const SignUpForm = ({ onSubmit }: Props) => {
   //out going state from the form
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [selectedTimeZone, setSelectedTimeZone] = useState<string | null>(null);
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState("");
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>();
 
   //incoming state from admin
-  const [companyName, setCompanyName] = useState('SocialRepeat')
-  const [formFields, setFormFields] = useState<FormFields | null>(null)
-  
+  const [companyName, setCompanyName] = useState("SocialRepeat");
+  const [formFields, setFormFields] = useState<FormFields | null>(null);
 
   // const onSubmit = (data:FieldValues) => {
-    
+
   //   const newData = {
   //     ...data,
   //     country: selectedCountry?.name.common,
@@ -71,41 +71,38 @@ const SignUpForm = ({onSubmit}:Props) => {
   //     timeZone: selectedTimeZone
   //   }
   //   setFormData(newData)
-    
+
   //   // console.log(newData);
   //   reset()
-   
+
   // };
 
-  
-  
-const [formData, setFormData] = useState<FieldValues>();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    companyName: "",
+  });
 
   const handleSelectCountry = (country: Country | null) => {
-    
-    setSelectedCountry(country)
-  }
+    setSelectedCountry(country);
+  };
 
   const handleSelectTimezone = (timeZone: string | null) => {
-    setSelectedTimeZone(timeZone)
-  }
+    setSelectedTimeZone(timeZone);
+  };
 
   const handlePhone = (event: string) => {
-    setPhone(event)
-  }
+    setPhone(event);
+  };
 
-  
-
-  const  adminData  = useAdmin()
-
-  
-  
+  const adminData = useAdmin();
 
   return (
     <Container>
       <ImageLogo />
       {/* //adjust marginTop for the vertical positioning of the form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form role="form" onSubmit={handleSubmit(onSubmit)}>
         <Responsive>
           <Typography
             variant="h5"
@@ -117,24 +114,28 @@ const [formData, setFormData] = useState<FieldValues>();
           </Typography>
           <Stack spacing={4}>
             <Stack direction="row" spacing={2}>
-              
-                <TextField
-                  {...register("firstName", { required: true })}
+              <TextField
+                {...register("firstName", { required: true })}
                 sx={{
                   "& .MuiInputBase-root": {
-                    borderRadius:"20px"
-                  } }}
-                  id="firstName"
-                  fullWidth
-                  label="First Name"
-                  error={errors.firstName?.type === "required"}
-                  helperText={
-                    errors.firstName?.type === "required"
-                      ? "First name cannot be empty"
-                      : ""
-                  }
-                />
-              
+                    borderRadius: "20px",
+                  },
+                }}
+                id="firstName"
+                placeholder="First name here"
+                value={formData.firstName}
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
+                fullWidth
+                label="First Name"
+                error={errors.firstName?.type === "required"}
+                helperText={
+                  errors.firstName?.type === "required"
+                    ? "First name cannot be empty"
+                    : ""
+                }
+              />
 
               <TextField
                 {...register("lastName", { required: true })}
@@ -182,12 +183,21 @@ const [formData, setFormData] = useState<FieldValues>();
             />
 
             <Stack spacing={2}>
-              <Button type="submit" variant="contained" size="large" data-testid="button" >
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                data-testid="signupButton"
+              >
                 Sign up
               </Button>
-              {/* <Button variant="contained" size="large">
+              <Button
+                variant="contained"
+                size="large"
+                data-testid="loginButton"
+              >
                 Back to Login
-              </Button> */}
+              </Button>
             </Stack>
           </Stack>
         </Responsive>

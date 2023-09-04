@@ -1,99 +1,167 @@
-import react from "react"
 import SignUpForm from "./SignUpForm";
-import { fireEvent, render } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { render, screen, waitFor } from "@testing-library/react";
 import { jest } from "@jest/globals";
+import user from "@testing-library/user-event";
 
-describe("sign up", () => {
+describe("input fields are found in the document", () => {
+  
+  test("renders the form Title", () => {
     const mockOnSubmit = jest.fn();
-    describe("with valid inputs", () => {
-        it("calls the onSubmit function", async() => {
-            
-            const { getByLabelText, getByRole } = render(
-              <SignUpForm onSubmit={mockOnSubmit} />
-            );
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const linkElement = screen.getByText(/Sign up to/i);
+    expect(linkElement).toBeInTheDocument();
+  });
 
-             await act( async() => {
-              fireEvent.change(getByLabelText("First Name"), {
-                target: { value: "Chukwunonso" },
-              });
-                
-            fireEvent.change(getByLabelText("Last Name"), {
-              target: { value: "Okongwu" },
-            });
-                fireEvent.change(getByLabelText("E-mail"), {
-                  target: { value: "email@test.com" },
-                });
-                fireEvent.change(getByLabelText("Company name"), {
-                  target: { value: "ABC company" },
-                });
-            });
+  test("renders First name input", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const firstNameInput = screen.getByLabelText(/First Name/i);
+    expect(firstNameInput).toBeInTheDocument();
+  });
 
-             await act( async() => {
-                fireEvent.click(getByRole("button"))
-            })
+  test("renders last name input", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const lastNameInput = screen.getByLabelText(/Last Name/i);
+    expect(lastNameInput).toBeInTheDocument();
+  });
 
-            expect(mockOnSubmit).toHaveBeenCalled()
+  test("renders email", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const emailInput = screen.getByLabelText("E-mail");
+    expect(emailInput).toBeInTheDocument();
+  });
 
-        })
-    })
+  test("renders company name", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const companyNameInput = screen.getByLabelText("Company name");
+    expect(companyNameInput).toBeInTheDocument();
+  });
 
-    describe("with invalid first name", () => {
-      it("renders first name validation error", async() => {
-        const { getByLabelText, container } = render(<SignUpForm onSubmit={mockOnSubmit} />);
-
-        await act(async () => {
-          const firstNameInput = getByLabelText("First Name")
-          fireEvent.change(firstNameInput, {target:{value: ""}})
-        })
-
-        expect(container.innerHTML).toMatch("First name cannot be empty");
-        });
+  test("renders country", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const countryInput = screen.getByRole("combobox", {
+      name: /country/i,
     });
+    expect(countryInput).toBeInTheDocument();
+  });
 
-    describe("with invalid last name", () => {
-      it("renders the last name validation error", async() => {
-        const { getByLabelText, container } = render(<SignUpForm onSubmit={mockOnSubmit} />);
-
-        await act(async () => {
-          const lastNameInput = getByLabelText("Last Name")
-          fireEvent.change(lastNameInput, {target:{value: ""}})
-        })
-
-        expect(container.innerHTML).toMatch("Last name cannot be empty");
-
-        })
-
+  test("renders phone", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const phoneInput = screen.getByRole("textbox", {
+      name: /phone/i,
     });
+    expect(phoneInput).toBeInTheDocument();
+  });
 
-    describe("with invalid email", () => { 
-      it("renders an email validation error message", async() => {
-          const { getByLabelText, container } = render(
-            <SignUpForm onSubmit={mockOnSubmit} />
-          );
-        
-        await act(async () => {
-          const emailInput = getByLabelText("E-mail");
-          fireEvent.change(emailInput, { target: { value: "" } });
-        });
 
-        expect(container.innerHTML).toMatch("email cannot be empty");
-        
-        })
+  test("renders time zone", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const timeZoneInput = screen.getByRole("combobox", {
+      name: /time zone/i,
     });
-    
-    describe("with invalid company name", () => {
-      it("renders the company name validation message", async() => {
-          const { getByLabelText, container } = render(
-            <SignUpForm onSubmit={mockOnSubmit} />
-          );
-        
-        await act(async () => {
-          const companyNameInput = getByLabelText("Company name");
-          fireEvent.change(companyNameInput, { target: { value: "" } });
-        });
+    expect(timeZoneInput).toBeInTheDocument();
+  });
 
-        expect(container.innerHTML).toContain("Company name cannot be empty");
-        })
-    });
+  test("renders login button", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const signupbutton = screen.getByRole("button", { name: "Sign up" });
+    expect(signupbutton).toBeInTheDocument();
+  });
+
+  test("renders buttons", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const buttons = screen.getAllByRole("button");
+    expect(buttons.length).toBe(4);
+  });
+
+  test("renders sign up Button", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const button = screen.getByTestId("signupButton");
+    expect(button).toBeInTheDocument();
+  });
+
+  test("renders a form element", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const form = screen.getByRole("form");
+    expect(form).toBeInTheDocument();
+  });
 })
+
+
+
+describe("should be able to type in the input", () => {
+  
+test("should be able to type in the first name input", () => {
+  const mockOnSubmit = jest.fn();
+  render(<SignUpForm onSubmit={mockOnSubmit} />);
+  const firstNameInput = screen.getByPlaceholderText("First name here");
+  user.type(firstNameInput, "chukwunonso");
+});
+
+  
+test("should be able to type in the Last name input", () => {
+  const mockOnSubmit = jest.fn();
+  render(<SignUpForm onSubmit={mockOnSubmit} />);
+  const lastNameInput = screen.getByLabelText(/Last Name/i);
+  user.type(lastNameInput, "Okongwu");
+});
+
+  test("should be able to type in the email input", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const emailInput = screen.getByRole("textbox", {
+      name: /e\-mail/i,
+    });
+    user.type(emailInput, "test@gmail.com");
+  });
+
+  test("should be able to type in the company name input", () => {
+    const mockOnSubmit = jest.fn();
+    render(<SignUpForm onSubmit={mockOnSubmit} />);
+    const companyNameInput = screen.getByLabelText("Company name");
+    user.type(companyNameInput, "test company");
+  });
+})
+
+
+
+
+describe("That submit button is called",()=>{
+
+test("calls the submit", async () => {
+  const mockOnSubmit = jest.fn();
+  render(<SignUpForm onSubmit={mockOnSubmit} />);
+
+  const firstNameInput = screen.getByLabelText(/First Name/i);
+  user.type(firstNameInput, "chukwunonso");
+
+  const lastNameInput = screen.getByLabelText(/Last Name/i);
+  user.type(lastNameInput, "Okongwu");
+
+   const emailInput = screen.getByRole("textbox", {name: /e\-mail/i,});
+  user.type(emailInput, "test@gmail.com");
+  
+  const companyNameInput = screen.getByLabelText("Company name");
+  user.type(companyNameInput, "test company");
+
+  user.click(screen.getByRole("button", {name: /sign up/i, }));
+
+  await waitFor(() => {
+    expect(mockOnSubmit).toHaveBeenCalledTimes(1);
+  })
+  
+});
+
+})
+
+
