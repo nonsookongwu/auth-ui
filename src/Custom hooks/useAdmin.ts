@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 
 
 export interface FormFields {
-  firstName: boolean;
-  lastname: boolean;
-  fullName:  boolean;
-  email: boolean;
-  PhoneNumber: boolean;
-  password: boolean;
+  
+firstNameLastName: boolean;
+        fullName: boolean;
+        email :boolean;
+        PhoneNumber: boolean;
+        password: boolean;
+        companyName: boolean;
+        country: boolean;
+  timeZone: boolean;
 }
 
 export interface AdminData {
@@ -40,7 +43,8 @@ const useAdmin = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setAdminData(res.data);
+        // console.log(res)
+        setAdminData(res);
       })
       .catch((error) => {
         

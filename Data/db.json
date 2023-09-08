@@ -2,15 +2,17 @@
 
     "adminData":[
     { "formFields":{
-        "firstName": true,
-        "lastname": true,
+        "firstNameLastName": true,
         "fullName": false,
         "email" :true,
         "PhoneNumber": true,
-        "password": true
+        "password": false,
+        "companyName": false,
+        "country": true,
+        "timeZone": false
     },
-    "formPositioning": "up",
-    "borderRadius": "normal",
+    "formPositioning": "left",
+    "borderRadius": "20px",
     "buttonColor": "normal",
     "brandImageUrl": "link",
     "brandImageSize": "32px",

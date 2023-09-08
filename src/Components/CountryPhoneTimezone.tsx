@@ -30,7 +30,7 @@ const CountryPhoneTimezone = ({
 
   const { countries } = useCountries();
 
-  console.log(countries)
+ 
 
   return (
     <div>

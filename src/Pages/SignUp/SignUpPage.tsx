@@ -24,8 +24,8 @@ const SignUpPage = () => {
 
   return (
     <>
-      <Grid container>
-        <Grid item xs={12} sm={12} md={8} height={"100%"}>
+      <Grid container >
+        <Grid item xs={12} sm={12} md={8} >
           {/* <Box bgcolor={"secondary.main"} sx={{ height: "100vh" }}></Box> */}
           <SignUpForm onSubmit={handleSubmit} />
           <Typography textAlign={"center"} mt={3} gutterBottom>
@@ -37,7 +37,7 @@ const SignUpPage = () => {
           sx={{ display: { xs: "none", sm: "none", md: "block" } }}
           md={4}
           bgcolor={"primary.main"}
-          height={"100%"}
+          // height={"100vh"}
         >
           <LowerLogo />
         </Grid>

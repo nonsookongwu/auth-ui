@@ -16,7 +16,7 @@ const ImageLogo = () => {
           marginLeft: 3,
           
       }}
-        sizes='large'  
+        sizes='medium'  
     />
   );
 }
