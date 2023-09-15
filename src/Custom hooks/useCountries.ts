@@ -14,8 +14,10 @@ export interface Country{
   name: CountryName;
   idd: Idd;
     flag: string;
-    timezones: string[] | null;
+    // timezones: string[] | null;
 };
+
+
 
 
 

@@ -33,10 +33,13 @@ export interface AdminData {
 const useAdmin = () => {
   const [adminData, setAdminData] = useState<AdminData[]>([]);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
+    
+    setLoading(true);
+    
 
     fetch("http://localhost:8000/adminData", {
       signal: controller.signal,
@@ -45,9 +48,12 @@ const useAdmin = () => {
       .then((res) => {
         // console.log(res)
         setAdminData(res);
+        setLoading(false);
+        
       })
       .catch((error) => {
         
+        setLoading(false);
         setError(error.message);
       });
 

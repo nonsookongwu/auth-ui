@@ -17,26 +17,15 @@ import ImageLogo from "./ImageLogo";
 import { FieldValues, useForm } from "react-hook-form";
 import CountryPhoneTimezone from "./CountryPhoneTimezone";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import useAdmin, { FormFields } from "../Custom hooks/useAdmin";
+import useAdmin, { AdminData, FormFields } from "../Custom hooks/useAdmin";
 import { Country } from "../Custom hooks/useCountries";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
-
-// const Responsive = styled("div")(({ theme }) => ({
-//   [theme.breakpoints.up("sm")]: {
-//     bgcolor: "secondary.light",
-//     margin: "10px, auto",
-//     paddingTop: "3rem",
-//     paddingRight: "15rem",
-//     paddingLeft: "15rem",
-
-//     textAlign: "center",
-//     // maxWidth: 450,
-//     // margin: "0 auto",
-//     // padding: "20px 5px"
-//     // display: "block",
-//   },
-// }));
-
+import FullnameInput from "./FormInputs/FullnameInput";
+import FirstNameInput from "./FormInputs/FirstNameInput";
+import LastNameInput from "./FormInputs/LastNameInput";
+import EmailInput from "./FormInputs/EmailInput";
+import PasswordInput from "./FormInputs/PasswordInput";
+import CompanyNameInput from "./FormInputs/CompanyNameInput";
 
 
 export interface FormData {
@@ -50,13 +39,17 @@ export interface FormData {
 
 interface Props {
   onSubmit: (data: FieldValues) => void;
+
+  layoutData: AdminData;
+  onCountry: (country: Country | null) => void;
+  selectedCountry: Country | null;
+  onTimezone: (timeZone: string | null) => void;
+  onPhone: (event: string) => void;
 }
 
-const SignUpForm = ({ onSubmit }: Props) => {
-  //out going state from the form
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [selectedTimeZone, setSelectedTimeZone] = useState<string | null>(null);
-  const [phone, setPhone] = useState("");
+
+const SignUpForm = ({ onSubmit, onCountry, onPhone, onTimezone, selectedCountry, layoutData }: Props) => {
+  
 
   const {
     register,
@@ -65,44 +58,18 @@ const SignUpForm = ({ onSubmit }: Props) => {
     reset,
   } = useForm<FormData>();
 
-  //incoming state from admin
-  const [companyName, setCompanyName] = useState("SocialRepeat");
-  const [formFields, setFormFields] = useState<FormFields | null>(null);
+  
 
-  // const onSubmit = (data:FieldValues) => {
 
-  //   const newData = {
-  //     ...data,
-  //     country: selectedCountry?.name.common,
-  //     phone: phone,
-  //     timeZone: selectedTimeZone
-  //   }
-  //   setFormData(newData)
+  // const [formData, setFormData] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   companyName: "",
+  // });
 
-  //   // console.log(newData);
-  //   reset()
 
-  // };
-
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    companyName: "",
-  });
-
-  const handleSelectCountry = (country: Country | null) => {
-    setSelectedCountry(country);
-  };
-
-  const handleSelectTimezone = (timeZone: string | null) => {
-    setSelectedTimeZone(timeZone);
-  };
-
-  const handlePhone = (event: string) => {
-    setPhone(event);
-  };
-
+//for password input
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -113,26 +80,9 @@ const SignUpForm = ({ onSubmit }: Props) => {
     event.preventDefault();
   };
 
-  const { adminData } = useAdmin();
 
-  
-    // const Responsive = styled("div")(({ theme }) => ({
-    
-    //   [theme.breakpoints.up("sm")]: {
-    //     bgcolor: "secondary.light",
-    //     margin: "10px auto",
-    //     paddingTop: "3rem",
-    //     paddingRight: "15rem",
-    //     paddingLeft: "15rem",
-        
-    //     textAlign: "center",
-      
-    //     // maxWidth: 450,
-    //     // margin: "0 auto",
-    //     // padding: "20px 5px"
-    //     // display: "block",
-    //   },
-    // }));
+
+
 
   
 
@@ -141,198 +91,142 @@ const SignUpForm = ({ onSubmit }: Props) => {
       <ImageLogo />
       {/* //adjust marginTop for the vertical positioning of the form */}
       <form role="form" onSubmit={handleSubmit(onSubmit)}>
-        {adminData.map((data) => (
-          <Box
-            sx={{
-              margin: "2px auto",
-              paddingTop: data.formPositioning === "up" ? "0rem" : "7rem",
-              // ${({ click }) => (click ? 0 : "-100%")};
-              paddingRight: data.formPositioning === "left" ? "30rem" : "4rem",
-              paddingLeft: data.formPositioning === "right" ? "30rem": "4rem",
-            }}
-          >
-            <>
-              <Typography
-                variant="h5"
-                fontWeight={"bold"}
-                marginBottom={2}
-                gutterBottom
-              >
-                {`Sign up to ${companyName}`}
-              </Typography>
-              <Stack spacing={4}>
-                {data.formFields.fullName && (
-                  <TextField
-                    {...register("fullname", { required: true })}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        borderRadius: data.borderRadius,
-                      },
-                    }}
-                    id="fullname"
+        <Box
+          sx={{
+            margin: "2px auto",
+            paddingTop: layoutData.formPositioning === "up" ? "0rem" : "7rem",
+            paddingRight:
+              layoutData.formPositioning === "left" ? "25rem" : "5rem",
+            paddingLeft:
+              layoutData.formPositioning === "right" ? "25rem" : "5rem",
+          }}
+        >
+          <>
+            <Typography
+              variant="h5"
+              fontWeight={"bold"}
+              marginBottom={2}
+              gutterBottom
+            >
+              {`Sign up to Company Name`}
+            </Typography>
+
+            <Stack spacing={4}>
+              {layoutData.formFields.fullName && (
+                <FullnameInput
+                  id="fullname"
+                  label="Full Name"
+                  type="text"
+                  errors={errors}
+                  name="fullname"
+                  register={register}
+                  rules={{ required: true }}
+                  borderRadius={layoutData.borderRadius}
+                />
+              )}
+              {layoutData.formFields.firstNameLastName && (
+                <Stack direction="row" spacing={2}>
+                  <FirstNameInput
+                    id="firstname"
+                    label="First Name"
                     type="text"
-                    label="Fullname"
-                    error={errors.fullname?.type === "required"}
-                    helperText={
-                      errors.fullname?.type === "required"
-                        ? "fullname cannot be empty"
-                        : ""
-                    }
+                    errors={errors}
+                    name="firstName"
+                    register={register}
+                    rules={{ required: true }}
+                    borderRadius={layoutData.borderRadius}
+                  />
+
+                  <LastNameInput
+                    id="lastname"
+                    label="Last Name"
+                    type="text"
+                    errors={errors}
+                    name="lastName"
+                    register={register}
+                    rules={{ required: true }}
+                    borderRadius={layoutData.borderRadius}
+                  />
+                </Stack>
+              )}
+              <Stack spacing={4}>
+                {layoutData.formFields.email && (
+                  <EmailInput
+                    id="email"
+                    label="E-mail"
+                    type="email"
+                    errors={errors}
+                    name="email"
+                    register={register}
+                    rules={{ required: true }}
+                    borderRadius={layoutData.borderRadius}
                   />
                 )}
-                {data.formFields.firstNameLastName && (
-                  <Stack direction="row" spacing={2}>
-                    <TextField
-                      {...register("firstName", { required: true })}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          borderRadius: data.borderRadius,
-                        },
-                      }}
-                      id="firstName"
-                      value={formData.firstName}
-                      onChange={(e) =>
-                        setFormData({ ...formData, firstName: e.target.value })
-                      }
-                      fullWidth
-                      label="First Name"
-                      error={errors.firstName?.type === "required"}
-                      helperText={
-                        errors.firstName?.type === "required"
-                          ? "First name cannot be empty"
-                          : ""
-                      }
-                    />
 
-                    <TextField
-                      {...register("lastName", { required: true })}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          borderRadius: data.borderRadius,
-                        },
-                      }}
-                      id="lastName"
-                      fullWidth
-                      label="Last Name"
-                      error={errors.lastName?.type === "required"}
-                      helperText={
-                        errors.lastName?.type === "required"
-                          ? "Last name cannot be empty"
-                          : ""
-                      }
-                    />
-                  </Stack>
+                {layoutData.formFields.password && (
+                  <PasswordInput
+                    id="password"
+                    label="Password"
+                    type="password"
+                    errors={errors}
+                    name="password"
+                    register={register}
+                    rules={{ required: true }}
+                    borderRadius={layoutData.borderRadius}
+                    showPassword={showPassword}
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  />
                 )}
-                <Stack spacing={4}>
-                  {data.formFields.email && (
-                    <TextField
-                      {...register("email", { required: true })}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          borderRadius: data.borderRadius,
-                        },
-                      }}
-                      id="email"
-                      type="email"
-                      label="E-mail"
-                      error={errors.email?.type === "required"}
-                      helperText={
-                        errors.email?.type === "required"
-                          ? "email cannot be empty"
-                          : ""
-                      }
-                    />
-                  )}
 
-                  {data.formFields.password && (
-                    <FormControl sx={{ m: 1 }} variant="outlined">
-                      <InputLabel htmlFor="outlined-adornment-password">
-                        Password
-                      </InputLabel>
-                      <OutlinedInput
-                        {...register("password", { required: true })}
-                        sx={{
-                          "& .MuiInputBase-root": {
-                            borderRadius: data.borderRadius,
-                          },
-                        }}
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        fullWidth
-                        error={errors.password?.type === "required"}
-                        // helperText={
-                        //   errors.password?.type === "required"
-                        //     ? "password cannot be empty"
-                        //     : ""
-                        // }
-                        endAdornment={
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        }
-                        label="Password"
-                      />
-                    </FormControl>
-                  )}
-
-                  {data.formFields.companyName && (
-                    <TextField
-                      {...register("companyName", { required: true })}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          borderRadius: data.borderRadius,
-                        },
-                      }}
-                      id="companyName"
-                      label="Company name"
-                      error={errors.companyName?.type === "required"}
-                      helperText={
-                        errors.companyName?.type === "required"
-                          ? "Company name cannot be empty"
-                          : ""
-                      }
-                    />
-                  )}
-                </Stack>
-                <CountryPhoneTimezone
-                  onSelectCountry={handleSelectCountry}
-                  selectedCountry={selectedCountry}
-                  onSelectTimezone={handleSelectTimezone}
-                  onCopyPhone={handlePhone}
-                />
-
-                <Stack spacing={2}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    data-testid="signupButton"
-                  >
-                    Sign up
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    data-testid="loginButton"
-                  >
-                    Back to Login
-                  </Button>
-                </Stack>
+                {layoutData.formFields.companyName && (
+                  <CompanyNameInput
+                    id="companyname"
+                    label="Company Name"
+                    type="text"
+                    errors={errors}
+                    name="companyName"
+                    register={register}
+                    rules={{ required: true }}
+                    borderRadius={layoutData.borderRadius}
+                  />
+                )}
               </Stack>
-            </>
-          </Box>
-        ))}
+              <CountryPhoneTimezone
+                onSelectCountry={onCountry}
+                selectedCountry={selectedCountry}
+                onSelectTimezone={onTimezone}
+                onCopyPhone={onPhone}
+                layoutData={layoutData}
+              />
+
+              <Stack spacing={2}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  data-testid="signupButton"
+                  // color= "primary"
+                  sx={{
+                    bgcolor: layoutData.buttonColor,
+                  }}
+                >
+                  Sign up
+                </Button>
+                <Button
+                  variant="contained"
+                  size="large"
+                  data-testid="loginButton"
+                  sx={{
+                    bgcolor: layoutData.buttonColor,
+                  }}
+                >
+                  Back to Login
+                </Button>
+              </Stack>
+            </Stack>
+          </>
+        </Box>
       </form>
     </Container>
   );

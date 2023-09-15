@@ -1,25 +1,26 @@
 {
 
     "adminData":[
-    { "formFields":{
-        "firstNameLastName": true,
-        "fullName": false,
-        "email" :true,
+    {
+      "formFields": {
+        "firstNameLastName": false,
+        "fullName": true,
+        "email": true,
         "PhoneNumber": true,
-        "password": false,
+        "password": true,
         "companyName": false,
         "country": true,
         "timeZone": false
-    },
-    "formPositioning": "left",
-    "borderRadius": "20px",
-    "buttonColor": "normal",
-    "brandImageUrl": "link",
-    "brandImageSize": "32px",
-    "brandImagePosition": "center",
-    "logoUrl":"https://www.google.com/images/branding/googleg/1x/googleg_standard_color",
-    "logoImageSize": "24px",
-    "logoImagePosition": "left"
+      },
+      "formPositioning": "center",
+      "borderRadius": "5px",
+      "buttonColor": "#0F2C59",
+      "brandImageUrl": "link",
+      "brandImageSize": "32px",
+      "brandImagePosition": "center",
+      "logoUrl": "https://www.google.com/images/branding/googleg/1x/googleg_standard_color",
+      "logoImageSize": "24px",
+      "logoImagePosition": "left"
     }
 
     ]
